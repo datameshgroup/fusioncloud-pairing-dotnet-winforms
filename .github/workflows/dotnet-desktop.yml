@@ -31,7 +31,7 @@ jobs:
         run: msbuild.exe DataMeshGroup.Fusion.Pairing.WinForms.sln /t:Restore /p:platform="Any CPU" /p:configuration="Release"
         
       - name: Upload artifact
+        uses: actions/upload-artifact@v1.0.0
         with:
-          name: PairingWinforms
-          path: "./_build"
-        
+          name: EZRepBundle
+          path: "./_build"      
