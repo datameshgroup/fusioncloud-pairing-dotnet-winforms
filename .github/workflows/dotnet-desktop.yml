@@ -30,3 +30,8 @@ jobs:
       - name: Build Solution
         run: msbuild.exe DataMeshGroup.Fusion.Pairing.WinForms.sln /t:Restore /p:platform="Any CPU" /p:configuration="Release"
         
+      - name: Upload artifact
+        with:
+          name: PairingWinforms
+          path: "./_build"
+        
