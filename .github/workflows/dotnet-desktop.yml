@@ -12,7 +12,8 @@ jobs:
 
     steps:      
       - uses: actions/checkout@v3
-      
+
+
       - name: Install .NET Core
         uses: actions/setup-dotnet@v3
         with:
@@ -33,7 +34,6 @@ jobs:
       - name: Upload artifact
         with:
           name: DataMeshGroup.Fusion.Pairing.WinForms
-          path: "./_build"   
-        
+          path: "./_build"
         
         
