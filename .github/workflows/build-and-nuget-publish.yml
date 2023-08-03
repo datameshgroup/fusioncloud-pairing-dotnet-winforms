@@ -37,7 +37,7 @@ jobs:
           path: DataMeshGroup.Fusion.Pairing.WinForms/bin/Release/*.nupkg
           
          
-  deploy:              
+  publish:              
     runs-on: ubuntu-latest
     needs: [ build ]
     
