@@ -1,10 +1,21 @@
-name: Build
+name: build-and-nuget-publish
 
 on:  
   push:
     branches: [ "master" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "*" ]
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+  OutputDirectory: ${{github.workspace}}/buildoutput
+  NuGetProject: DataMeshGroup.Fusion.Pairing.WinForms/DataMeshGroup.Fusion.Pairing.WinForms.csproj
+
+defaults:
+  run:
+    shell: pwsh
+    
 
 jobs:  
   build:    
@@ -22,19 +33,19 @@ jobs:
         uses: NuGet/setup-nuget@v1.0.5
 
       - name: Restore dependencies
-        run: msbuild.exe DataMeshGroup.Fusion.Pairing.WinForms.sln /t:Restore /p:configuration="Release"
+        run: msbuild.exe  ${{ env.NuGetProject }} /t:Restore /p:configuration="Release" /p:OutputPath=${{ env.OutputDirectory }}
         
       - name: Build
-        run: msbuild.exe DataMeshGroup.Fusion.Pairing.WinForms.sln /t:Build /p:configuration="Release"
+        run: msbuild.exe ${{ env.NuGetProject }} /t:Build /p:configuration="Release" /p:OutputPath=${{ env.OutputDirectory }}
         
       - name: Create Nuget package
-        run: msbuild.exe DataMeshGroup.Fusion.Pairing.WinForms.sln /t:Pack /p:configuration="Release"        
+        run: msbuild.exe ${{ env.NuGetProject }} /t:Pack /p:configuration="Release" /p:OutputPath=${{ env.OutputDirectory }}
         
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: nuget
-          path: DataMeshGroup.Fusion.Pairing.WinForms/bin/Release/*.nupkg
+          path: ${{ env.OutputDirectory }}/*.nupkg
           
          
   publish:              
@@ -46,7 +57,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: nuget
-          path: nugetpath
+          path: ${{ env.OutputDirectory }}
           
       # Install the .NET SDK indicated in the global.json file
       - name: Setup .NET Core
