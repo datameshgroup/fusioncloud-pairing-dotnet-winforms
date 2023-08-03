@@ -29,14 +29,23 @@ jobs:
       - name: DIR
         run: dir .
 
-      - name: Build Solution
-        run: msbuild.exe DataMeshGroup.Fusion.Pairing.WinForms.sln -verbosity:diag /t:Restore /p:platform="Any CPU" /p:configuration="Release" /p:BaseOutputPath="__OUTPUT__"
+      - name: Restore dependencies
+        run: msbuild.exe DataMeshGroup.Fusion.Pairing.WinForms.sln /t:Restore /p:configuration="Release"
+        
+      - name: Build
+        run: msbuild.exe DataMeshGroup.Fusion.Pairing.WinForms.sln /t:Build /p:configuration="Release"
+        
+      - name: Create Nuget package
+        run: msbuild.exe DataMeshGroup.Fusion.Pairing.WinForms.sln /t:Pack /p:configuration="Release"        
         
       - name: DIR
-        run: dir ../. -r
+        run: dir -r
+        
+      - name: DIR
+        run: dir ./DataMeshGroup.Fusion.Pairing.WinForms/bin/Release
         
       - name: Upload artifact
         uses: actions/upload-artifact@v1.0.0
         with:
           name: NugetBundle
-          path: ./buildoutput     
+          path: ./DataMeshGroup.Fusion.Pairing.WinForms/bin/Release/*.nupkg
