@@ -28,7 +28,7 @@ jobs:
         run: dir .
 
       - name: Build Solution
-        run: msbuild.exe DataMeshGroup.Fusion.Pairing.WinForms.sln /t:Restore /p:platform="Any CPU" /p:configuration="Release" /BaseOutputPath:"__OUTPUT__"
+        run: msbuild.exe DataMeshGroup.Fusion.Pairing.WinForms.sln -verbosity:diag /t:Restore /p:platform="Any CPU" /p:configuration="Release" /BaseOutputPath:"__OUTPUT__"
         
       - name: DIR
         run: dir ../. -r
