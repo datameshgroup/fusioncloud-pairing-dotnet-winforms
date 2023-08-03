@@ -26,9 +26,6 @@ jobs:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1.0.5
 
-      - name: DIR
-        run: dir .
-
       - name: Restore dependencies
         run: msbuild.exe DataMeshGroup.Fusion.Pairing.WinForms.sln /t:Restore /p:configuration="Release"
         
@@ -39,13 +36,11 @@ jobs:
         run: msbuild.exe DataMeshGroup.Fusion.Pairing.WinForms.sln /t:Pack /p:configuration="Release"        
         
       - name: DIR
-        run: dir -r
-        
-      - name: DIR
-        run: dir ./DataMeshGroup.Fusion.Pairing.WinForms/bin/Release
+        run: dir DataMeshGroup.Fusion.Pairing.WinForms\bin\Release
         
       - name: Upload artifact
         uses: actions/upload-artifact@v1.0.0
         with:
           name: NugetBundle
-          path: ./DataMeshGroup.Fusion.Pairing.WinForms/bin/Release/*.nupkg
+          path: DataMeshGroup.Fusion.Pairing.WinForms\bin\Release
+          
