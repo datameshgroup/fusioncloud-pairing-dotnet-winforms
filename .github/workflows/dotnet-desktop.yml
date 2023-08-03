@@ -28,10 +28,10 @@ jobs:
         run: dir .
 
       - name: Build Solution
-        run: msbuild.exe DataMeshGroup.Fusion.Pairing.WinForms.sln /t:Restore /p:platform="Any CPU" /p:configuration="Release"
+        run: msbuild.exe DataMeshGroup.Fusion.Pairing.WinForms.sln /t:Restore /p:platform="Any CPU" /p:configuration="Release" /BaseOutputPath:"__OUTPUT__"
         
       - name: DIR
-        run: dir -r
+        run: dir ../. -r
         
       - name: Upload artifact
         uses: actions/upload-artifact@v1.0.0
