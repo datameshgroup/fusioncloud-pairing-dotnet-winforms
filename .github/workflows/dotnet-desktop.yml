@@ -23,12 +23,12 @@ jobs:
 
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1.0.5
-        
-      - name: Navigate to Workspace
-        run: cd $GITHUB_WORKSPACE
+
+      - name: DIR
+        run: dir .
 
       - name: Build Solution
-        run: msbuild.exe DataMeshGroup.Fusion.Pairing.WinForms.sln /t:Restore /p:platform="Any CPU" /p:configuration="Release" /p:PublishUrl="../buildoutput"
+        run: msbuild.exe DataMeshGroup.Fusion.Pairing.WinForms.sln /t:Restore /p:platform="Any CPU" /p:configuration="Release"
         
       - name: DIR
         run: dir -r
