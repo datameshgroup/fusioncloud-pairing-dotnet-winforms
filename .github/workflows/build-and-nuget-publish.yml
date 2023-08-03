@@ -69,6 +69,6 @@ jobs:
       - name: Publish NuGet package
         shell: pwsh      
         run: |
-          foreach($file in (Get-ChildItem "nugetpath" -Recurse -Include *.nupkg)) {
+          foreach($file in (Get-ChildItem "${{ env.OutputDirectory }}" -Recurse -Include *.nupkg)) {
               dotnet nuget push $file --api-key "${{ secrets.PUBLISH_NUGET_SECRET }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
           }       
