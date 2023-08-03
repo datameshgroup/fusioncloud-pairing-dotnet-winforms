@@ -36,11 +36,11 @@ jobs:
         run: msbuild.exe DataMeshGroup.Fusion.Pairing.WinForms.sln /t:Pack /p:configuration="Release"        
         
       - name: DIR
-        run: dir DataMeshGroup.Fusion.Pairing.WinForms\bin\Release
+        run: dir DataMeshGroup.Fusion.Pairing.WinForms/bin/Release
         
       - name: Upload artifact
-        uses: actions/upload-artifact@v1.0.0
+        uses: actions/upload-artifact@v3
         with:
           name: NugetBundle
-          path: DataMeshGroup.Fusion.Pairing.WinForms\bin\Release
+          path: DataMeshGroup.Fusion.Pairing.WinForms/bin/Release/*.nupkg
           
