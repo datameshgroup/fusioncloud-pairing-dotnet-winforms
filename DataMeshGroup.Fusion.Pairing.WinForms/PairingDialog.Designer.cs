@@ -89,7 +89,7 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
             label11.ForeColor = Color.FromArgb(136, 136, 136);
             label11.Location = new Point(12, 9);
             label11.Name = "label11";
-            label11.Size = new Size(419, 32);
+            label11.Size = new Size(324, 32);
             label11.TabIndex = 42;
             label11.Text = "DATAMESH TERMINAL PAIRING";
             label11.TextAlign = ContentAlignment.MiddleLeft;
@@ -122,10 +122,11 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
             lblVersion.ForeColor = Color.Black;
             lblVersion.Location = new Point(330, 29);
             lblVersion.Name = "lblVersion";
-            lblVersion.Size = new Size(449, 300);
+            lblVersion.Size = new Size(449, 342);
             lblVersion.TabIndex = 43;
-            lblVersion.Text = "1. Scan the QR code on the DataMesh terminal, and follow the instructions on the terminal screen.\r\n\r\n2. After the terminal has been paired with the POS, press Next.\r\n";
-            lblVersion.TextAlign = ContentAlignment.MiddleCenter;
+            lblVersion.Text = resources.GetString("lblVersion.Text");
+            lblVersion.TextAlign = ContentAlignment.MiddleLeft;
+            lblVersion.Click += lblVersion_Click;
             // 
             // qrPictureBox
             // 
@@ -337,7 +338,7 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "PairingDialog";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "PairingDialog";
+            Text = "DataMesh Terminal Pairing";
             Load += PairingDialog_Load;
             PnlQRCode.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)qrPictureBox).EndInit();

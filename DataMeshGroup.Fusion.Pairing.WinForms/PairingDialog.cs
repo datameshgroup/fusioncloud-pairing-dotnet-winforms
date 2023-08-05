@@ -321,7 +321,10 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
 
         }
 
+        private void lblVersion_Click(object sender, EventArgs e)
+        {
 
+        }
     }
 
 
