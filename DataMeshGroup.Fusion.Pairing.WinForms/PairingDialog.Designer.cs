@@ -50,7 +50,6 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
             LblPaymentDialogLine1 = new Label();
             TxtPaymentDialogText = new Label();
             LblPaymentDialogTitle = new Label();
-            button1 = new Button();
             PnlManualEntry = new Panel();
             BtnBack = new Button();
             txtKEK = new TextBox();
@@ -61,7 +60,8 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
             LblSaleIDLabel = new Label();
             BtnDialogOK = new Button();
             NextTimer = new System.Windows.Forms.Timer(components);
-            lblNextTimer = new Label();
+            progressBar1 = new SmoothProgressBar();
+            BtnDialogCancel = new Button();
             PnlQRCode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)qrPictureBox).BeginInit();
             PnlPairingStatus.SuspendLayout();
@@ -72,22 +72,26 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
             // BtnNext
             // 
             BtnNext.Anchor = AnchorStyles.None;
-            BtnNext.Enabled = false;
-            BtnNext.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            BtnNext.Location = new Point(659, 443);
+            BtnNext.BackColor = SystemColors.ButtonFace;
+            BtnNext.FlatAppearance.BorderSize = 0;
+            BtnNext.FlatStyle = FlatStyle.Flat;
+            BtnNext.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            BtnNext.ForeColor = SystemColors.WindowText;
+            BtnNext.Location = new Point(400, 499);
             BtnNext.Name = "BtnNext";
-            BtnNext.Size = new Size(152, 48);
+            BtnNext.Size = new Size(368, 48);
             BtnNext.TabIndex = 39;
-            BtnNext.Text = "Next";
-            BtnNext.UseVisualStyleBackColor = true;
+            BtnNext.UseVisualStyleBackColor = false;
             BtnNext.Click += BtnNext_Click;
+            BtnNext.Paint += BtnNext_Paint;
             // 
             // label11
             // 
             label11.BackColor = Color.Transparent;
             label11.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            label11.ForeColor = Color.FromArgb(136, 136, 136);
-            label11.Location = new Point(12, 9);
+            label11.ForeColor = Color.Gray;
+            label11.Location = new Point(16, 9);
+            label11.Margin = new Padding(0);
             label11.Name = "label11";
             label11.Size = new Size(324, 32);
             label11.TabIndex = 42;
@@ -99,40 +103,47 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
             PnlQRCode.Controls.Add(BtnEnterCredentialsManually);
             PnlQRCode.Controls.Add(lblVersion);
             PnlQRCode.Controls.Add(qrPictureBox);
-            PnlQRCode.Location = new Point(12, 44);
+            PnlQRCode.Location = new Point(0, 44);
             PnlQRCode.Name = "PnlQRCode";
-            PnlQRCode.Size = new Size(799, 391);
+            PnlQRCode.Size = new Size(784, 391);
             PnlQRCode.TabIndex = 43;
             // 
             // BtnEnterCredentialsManually
             // 
             BtnEnterCredentialsManually.Anchor = AnchorStyles.None;
-            BtnEnterCredentialsManually.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            BtnEnterCredentialsManually.Location = new Point(24, 335);
+            BtnEnterCredentialsManually.BackColor = Color.FromArgb(232, 232, 232);
+            BtnEnterCredentialsManually.FlatAppearance.BorderSize = 0;
+            BtnEnterCredentialsManually.FlatStyle = FlatStyle.Flat;
+            BtnEnterCredentialsManually.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            BtnEnterCredentialsManually.ForeColor = Color.FromArgb(80, 80, 80);
+            BtnEnterCredentialsManually.Location = new Point(400, 320);
             BtnEnterCredentialsManually.Name = "BtnEnterCredentialsManually";
-            BtnEnterCredentialsManually.Size = new Size(300, 36);
-            BtnEnterCredentialsManually.TabIndex = 45;
-            BtnEnterCredentialsManually.Text = "Enter credentials manually";
-            BtnEnterCredentialsManually.UseVisualStyleBackColor = true;
-            BtnEnterCredentialsManually.Click += BtnEnterCredentialsManually_Click;
+            BtnEnterCredentialsManually.Size = new Size(368, 48);
+            BtnEnterCredentialsManually.TabIndex = 46;
+            BtnEnterCredentialsManually.Text = "ENTER CREDENTIALS MANUALLY";
+            BtnEnterCredentialsManually.UseVisualStyleBackColor = false;
+            BtnEnterCredentialsManually.Click += BtnEnterCredentialsManually_Click_1;
             // 
             // lblVersion
             // 
-            lblVersion.Font = new Font("Microsoft Sans Serif", 18F, FontStyle.Bold, GraphicsUnit.Point);
+            lblVersion.Font = new Font("Microsoft Sans Serif", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblVersion.ForeColor = Color.Black;
-            lblVersion.Location = new Point(330, 29);
+            lblVersion.Location = new Point(400, 0);
+            lblVersion.Margin = new Padding(0);
             lblVersion.Name = "lblVersion";
-            lblVersion.Size = new Size(449, 342);
+            lblVersion.Size = new Size(368, 317);
             lblVersion.TabIndex = 43;
             lblVersion.Text = resources.GetString("lblVersion.Text");
-            lblVersion.TextAlign = ContentAlignment.MiddleLeft;
             lblVersion.Click += lblVersion_Click;
             // 
             // qrPictureBox
             // 
-            qrPictureBox.Location = new Point(24, 29);
+            qrPictureBox.BackgroundImageLayout = ImageLayout.Stretch;
+            qrPictureBox.Image = (Image)resources.GetObject("qrPictureBox.Image");
+            qrPictureBox.Location = new Point(0, -18);
+            qrPictureBox.Margin = new Padding(0);
             qrPictureBox.Name = "qrPictureBox";
-            qrPictureBox.Size = new Size(300, 300);
+            qrPictureBox.Size = new Size(418, 409);
             qrPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             qrPictureBox.TabIndex = 42;
             qrPictureBox.TabStop = false;
@@ -143,19 +154,18 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
             PnlPairingStatus.Controls.Add(LblPaymentDialogLine1);
             PnlPairingStatus.Controls.Add(TxtPaymentDialogText);
             PnlPairingStatus.Controls.Add(LblPaymentDialogTitle);
-            PnlPairingStatus.Controls.Add(button1);
-            PnlPairingStatus.Location = new Point(12, 44);
+            PnlPairingStatus.Location = new Point(0, 44);
             PnlPairingStatus.Name = "PnlPairingStatus";
-            PnlPairingStatus.Size = new Size(799, 391);
+            PnlPairingStatus.Size = new Size(784, 391);
             PnlPairingStatus.TabIndex = 45;
             PnlPairingStatus.Visible = false;
             // 
             // BusyIndicator
             // 
             BusyIndicator.Image = (Image)resources.GetObject("BusyIndicator.Image");
-            BusyIndicator.Location = new Point(19, 245);
+            BusyIndicator.Location = new Point(16, 219);
             BusyIndicator.Name = "BusyIndicator";
-            BusyIndicator.Size = new Size(760, 133);
+            BusyIndicator.Size = new Size(752, 169);
             BusyIndicator.SizeMode = PictureBoxSizeMode.Zoom;
             BusyIndicator.TabIndex = 45;
             BusyIndicator.TabStop = false;
@@ -164,10 +174,10 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
             // 
             LblPaymentDialogLine1.Anchor = AnchorStyles.None;
             LblPaymentDialogLine1.Font = new Font("Microsoft Sans Serif", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
-            LblPaymentDialogLine1.ForeColor = Color.FromArgb(136, 136, 136);
-            LblPaymentDialogLine1.Location = new Point(19, 130);
+            LblPaymentDialogLine1.ForeColor = Color.FromArgb(80, 80, 80);
+            LblPaymentDialogLine1.Location = new Point(16, 130);
             LblPaymentDialogLine1.Name = "LblPaymentDialogLine1";
-            LblPaymentDialogLine1.Size = new Size(760, 39);
+            LblPaymentDialogLine1.Size = new Size(752, 39);
             LblPaymentDialogLine1.TabIndex = 48;
             LblPaymentDialogLine1.TextAlign = ContentAlignment.MiddleCenter;
             // 
@@ -175,35 +185,25 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
             // 
             TxtPaymentDialogText.Anchor = AnchorStyles.None;
             TxtPaymentDialogText.Font = new Font("Microsoft Sans Serif", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
-            TxtPaymentDialogText.ForeColor = Color.FromArgb(136, 136, 136);
-            TxtPaymentDialogText.Location = new Point(19, 183);
+            TxtPaymentDialogText.ForeColor = Color.FromArgb(80, 80, 80);
+            TxtPaymentDialogText.Location = new Point(16, 183);
             TxtPaymentDialogText.Name = "TxtPaymentDialogText";
-            TxtPaymentDialogText.Size = new Size(760, 77);
+            TxtPaymentDialogText.Size = new Size(752, 77);
             TxtPaymentDialogText.TabIndex = 47;
             TxtPaymentDialogText.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // LblPaymentDialogTitle
             // 
             LblPaymentDialogTitle.Anchor = AnchorStyles.None;
+            LblPaymentDialogTitle.BackColor = Color.FromArgb(232, 232, 232);
             LblPaymentDialogTitle.Font = new Font("Microsoft Sans Serif", 24F, FontStyle.Bold, GraphicsUnit.Point);
-            LblPaymentDialogTitle.ForeColor = Color.Black;
-            LblPaymentDialogTitle.Location = new Point(19, 12);
+            LblPaymentDialogTitle.ForeColor = Color.FromArgb(80, 80, 80);
+            LblPaymentDialogTitle.Location = new Point(16, 12);
             LblPaymentDialogTitle.Name = "LblPaymentDialogTitle";
-            LblPaymentDialogTitle.Size = new Size(760, 87);
+            LblPaymentDialogTitle.Size = new Size(752, 87);
             LblPaymentDialogTitle.TabIndex = 46;
             LblPaymentDialogTitle.Text = "PAIRING WITH TERMINAL";
             LblPaymentDialogTitle.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // button1
-            // 
-            button1.Anchor = AnchorStyles.None;
-            button1.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            button1.Location = new Point(323, 480);
-            button1.Name = "button1";
-            button1.Size = new Size(300, 36);
-            button1.TabIndex = 44;
-            button1.Text = "Enter credentials manually";
-            button1.UseVisualStyleBackColor = true;
             // 
             // PnlManualEntry
             // 
@@ -215,9 +215,9 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
             PnlManualEntry.Controls.Add(LblKEKLabel);
             PnlManualEntry.Controls.Add(LblPOIIDLabel);
             PnlManualEntry.Controls.Add(LblSaleIDLabel);
-            PnlManualEntry.Location = new Point(12, 44);
+            PnlManualEntry.Location = new Point(0, 44);
             PnlManualEntry.Name = "PnlManualEntry";
-            PnlManualEntry.Size = new Size(799, 391);
+            PnlManualEntry.Size = new Size(784, 391);
             PnlManualEntry.TabIndex = 44;
             // 
             // BtnBack
@@ -226,7 +226,7 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
             BtnBack.FlatAppearance.BorderSize = 0;
             BtnBack.FlatStyle = FlatStyle.Flat;
             BtnBack.Font = new Font("Microsoft Sans Serif", 24F, FontStyle.Bold, GraphicsUnit.Point);
-            BtnBack.Location = new Point(19, 12);
+            BtnBack.Location = new Point(63, 3);
             BtnBack.Name = "BtnBack";
             BtnBack.Size = new Size(82, 48);
             BtnBack.TabIndex = 1;
@@ -294,13 +294,17 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
             // BtnDialogOK
             // 
             BtnDialogOK.Anchor = AnchorStyles.None;
-            BtnDialogOK.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
-            BtnDialogOK.Location = new Point(659, 443);
+            BtnDialogOK.BackColor = Color.FromArgb(232, 232, 232);
+            BtnDialogOK.FlatAppearance.BorderSize = 0;
+            BtnDialogOK.FlatStyle = FlatStyle.Flat;
+            BtnDialogOK.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            BtnDialogOK.ForeColor = Color.FromArgb(80, 80, 80);
+            BtnDialogOK.Location = new Point(400, 499);
             BtnDialogOK.Name = "BtnDialogOK";
-            BtnDialogOK.Size = new Size(152, 48);
+            BtnDialogOK.Size = new Size(368, 48);
             BtnDialogOK.TabIndex = 5;
-            BtnDialogOK.Text = "OK";
-            BtnDialogOK.UseVisualStyleBackColor = true;
+            BtnDialogOK.Text = "CLOSE";
+            BtnDialogOK.UseVisualStyleBackColor = false;
             BtnDialogOK.Visible = false;
             BtnDialogOK.Click += BtnDialogOk_Click;
             // 
@@ -309,26 +313,44 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
             NextTimer.Interval = 1000;
             NextTimer.Tick += NextTimer_Tick;
             // 
-            // lblNextTimer
+            // progressBar1
             // 
-            lblNextTimer.AutoSize = true;
-            lblNextTimer.BackColor = SystemColors.ScrollBar;
-            lblNextTimer.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            lblNextTimer.ForeColor = SystemColors.ButtonShadow;
-            lblNextTimer.Location = new Point(785, 464);
-            lblNextTimer.Name = "lblNextTimer";
-            lblNextTimer.RightToLeft = RightToLeft.Yes;
-            lblNextTimer.Size = new Size(18, 20);
-            lblNextTimer.TabIndex = 46;
-            lblNextTimer.Text = "9";
-            lblNextTimer.TextAlign = ContentAlignment.MiddleLeft;
+            progressBar1.BackColor = Color.Black;
+            progressBar1.ForeColor = Color.Fuchsia;
+            progressBar1.Location = new Point(400, 537);
+            progressBar1.Margin = new Padding(0);
+            progressBar1.Maximum = 1000;
+            progressBar1.Minimum = 0;
+            progressBar1.Name = "progressBar1";
+            progressBar1.ProgressBarColor = Color.Blue;
+            progressBar1.Size = new Size(368, 10);
+            progressBar1.TabIndex = 47;
+            progressBar1.Value = 100;
+            // 
+            // BtnDialogCancel
+            // 
+            BtnDialogCancel.Anchor = AnchorStyles.None;
+            BtnDialogCancel.BackColor = Color.FromArgb(232, 232, 232);
+            BtnDialogCancel.FlatAppearance.BorderSize = 0;
+            BtnDialogCancel.FlatStyle = FlatStyle.Flat;
+            BtnDialogCancel.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            BtnDialogCancel.ForeColor = Color.FromArgb(80, 80, 80);
+            BtnDialogCancel.Location = new Point(16, 499);
+            BtnDialogCancel.Name = "BtnDialogCancel";
+            BtnDialogCancel.Size = new Size(368, 48);
+            BtnDialogCancel.TabIndex = 48;
+            BtnDialogCancel.Text = "CANCEL";
+            BtnDialogCancel.UseVisualStyleBackColor = false;
+            BtnDialogCancel.Click += BtnDialogCancel_Click;
             // 
             // PairingDialog
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(827, 503);
-            Controls.Add(lblNextTimer);
+            BackColor = Color.White;
+            ClientSize = new Size(784, 561);
+            Controls.Add(BtnDialogCancel);
+            Controls.Add(progressBar1);
             Controls.Add(BtnDialogOK);
             Controls.Add(label11);
             Controls.Add(BtnNext);
@@ -347,7 +369,6 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
             PnlManualEntry.ResumeLayout(false);
             PnlManualEntry.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -363,16 +384,16 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
         private Label LblKEKLabel;
         private Label LblPOIIDLabel;
         private Label LblSaleIDLabel;
-        private Button BtnEnterCredentialsManually;
         private Panel PnlPairingStatus;
         private PictureBox BusyIndicator;
         private Label LblPaymentDialogTitle;
-        private Button button1;
         private Button BtnDialogOK;
         private Label LblPaymentDialogLine1;
         private Label TxtPaymentDialogText;
         private Button BtnBack;
         private System.Windows.Forms.Timer NextTimer;
-        private Label lblNextTimer;
+        private SmoothProgressBar progressBar1;
+        private Button BtnEnterCredentialsManually;
+        private Button BtnDialogCancel;
     }
 }

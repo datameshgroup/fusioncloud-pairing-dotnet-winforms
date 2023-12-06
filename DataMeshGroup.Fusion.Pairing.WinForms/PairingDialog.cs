@@ -60,44 +60,46 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
         }
 
 
-        private static void SetLabel(Label label, string content)
+        private static void SetLabel(Label label, Color background, Color foreground, string content)
         {
             label.Text = content;
+            label.BackColor = background;
+            label.ForeColor = foreground;
             label.Visible = !string.IsNullOrEmpty(content);
         }
 
         public void ShowPairingLogonStatus(string title, string displayLine1, string displayText, DialogType dialogType, bool enableOk, bool enableNext)
         {
-            //// Set title
-            Color foreground, background;
-            SetLabel(LblPaymentDialogTitle, title);
-
+            Color resultForeground, resultBackground;
             switch (dialogType)
             {
                 case DialogType.Error:
-                    background = System.Drawing.ColorTranslator.FromHtml("#A20025"); //red
-                    foreground = Color.White;
+                    resultBackground = Theme.COLOR_RESULT_BACKGROUND_ERROR;
+                    resultForeground = Theme.COLOR_RESULT_FOREGROUND_ERROR;
                     break;
                 case DialogType.Success:
-                    background = System.Drawing.ColorTranslator.FromHtml("#008A00"); // green
-                    foreground = Color.White;
+                    resultBackground = Theme.COLOR_RESULT_BACKGROUND_SUCCESS;
+                    resultForeground = Theme.COLOR_RESULT_FOREGROUND_SUCCESS;
                     break;
                 case DialogType.Normal:
                 default:
-                    background = System.Drawing.ColorTranslator.FromHtml("#F0F0F0");
-                    foreground = Color.Black;
+                    resultBackground = Theme.COLOR_RESULT_BACKGROUND_PENDING;
+                    resultForeground = Theme.COLOR_RESULT_FOREGROUND_PENDING;
                     break;
             }
-            LblPaymentDialogTitle.BackColor = background;
-            LblPaymentDialogTitle.ForeColor = foreground;
-
-            SetLabel(LblPaymentDialogLine1, displayLine1);
-            SetLabel(TxtPaymentDialogText, displayText);
+            // Set title label
+            SetLabel(LblPaymentDialogTitle, resultBackground, resultForeground, title);
+            // Set optional text
+            SetLabel(LblPaymentDialogLine1, Color.Transparent, dialogType == DialogType.Error ? resultBackground : resultForeground, displayLine1);
+            SetLabel(TxtPaymentDialogText, Color.Transparent, Theme.COLOR_RESULT_FOREGROUND_PENDING, displayText);
 
             BusyIndicator.Visible = !enableOk;
 
             BtnDialogOK.Visible = enableOk;
+            BtnDialogCancel.Visible = !enableOk;
+
             BtnNext.Visible = enableNext;
+
 
             if (enableOk)
             {
@@ -134,10 +136,6 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
 
         private void BtnEnterCredentialsManually_Click(object sender, EventArgs e)
         {
-            PnlManualEntry.Visible = true;
-            PnlQRCode.Visible = false;
-            PnlPairingStatus.Visible = false;
-            manualEntry = true;
         }
 
         private void BtnDialogOk_Click(object sender, EventArgs e)
@@ -154,35 +152,45 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(pairingDataString, QRCodeGenerator.ECCLevel.M);
             QRCode qrCode = new QRCode(qrCodeData);
-            qrPictureBox.Image = qrCode.GetGraphic(pixelsPerModule: 4);
+            qrPictureBox.Image = qrCode.GetGraphic(pixelsPerModule: 16);
         }
 
         private void ResetNextTimer()
         {
             BtnNext.Enabled = false;
+            BtnNext.ForeColor = System.Drawing.ColorTranslator.FromHtml("#C0C0C0");
+            BtnNext.BackColor = Theme.COLOR_RESULT_BACKGROUND_PENDING;
+
 
             NextTimer.Enabled = false;
-            nextTimerCount = 9;
-            NextTimer.Interval = 1000;
+            nextTimerCount = 80;
+            NextTimer.Interval = 100;
             NextTimer.Enabled = true;
 
-            lblNextTimer.Text = $" {nextTimerCount}";
-            lblNextTimer.Visible = true;
+            progressBar1.Visible = true;
+            progressBar1.Maximum = 80;
+            progressBar1.Value = nextTimerCount;
+
+            progressBar1.ProgressBarColor = Theme.COLOR_RESULT_BACKGROUND_SUCCESS;
+            progressBar1.ForeColor = Theme.COLOR_RESULT_BACKGROUND_SUCCESS;
+            progressBar1.BackColor = Theme.COLOR_RESULT_BACKGROUND_PENDING;
         }
 
         private void NextTimer_Tick(object sender, EventArgs e)
         {
-            if (nextTimerCount == 1)
+            if (nextTimerCount == 0)
             {
                 // end timer
-                lblNextTimer.Visible = false;
                 NextTimer.Enabled = false;
+                progressBar1.Visible = false;
                 BtnNext.Enabled = true;
+                BtnNext.ForeColor = Theme.COLOR_RESULT_FOREGROUND_SUCCESS;
+                BtnNext.BackColor = Theme.COLOR_RESULT_BACKGROUND_SUCCESS;
             }
             else
             {
                 nextTimerCount--;
-                lblNextTimer.Text = $"{nextTimerCount}";
+                progressBar1.Value = nextTimerCount;
             }
         }
 
@@ -260,7 +268,7 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
                 fusionClient.SaleID = previousSaleID;
                 fusionClient.POIID = previousPOIID;
                 fusionClient.KEK = previousKEK;
-                ShowPairingLogonStatus("PAIRING  ", "", ex.Message, DialogType.Error, true, false);
+                ShowPairingLogonStatus("PAIRING UNSUCCESSFUL", "", ex.Message, DialogType.Error, true, false);
             }
         }
 
@@ -325,7 +333,49 @@ namespace DataMeshGroup.Fusion.Pairing.WinForms
         {
 
         }
+
+        private void BtnDialogCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+        }
+
+        private void BtnNext_Paint(object sender, PaintEventArgs e)
+        {
+            Button btn = (Button)sender;
+            SolidBrush solidBrush = new SolidBrush(btn.ForeColor);
+
+            StringFormat stringFormat = new StringFormat
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            };
+
+            e.Graphics.DrawString("NEXT", btn.Font, solidBrush, new Rectangle(0, 0, btn.Width, btn.Height), stringFormat);
+
+            solidBrush.Dispose();
+            stringFormat.Dispose();
+        }
+
+        private void BtnEnterCredentialsManually_Click_1(object sender, EventArgs e)
+        {
+            PnlManualEntry.Visible = true;
+            PnlQRCode.Visible = false;
+            PnlPairingStatus.Visible = false;
+            manualEntry = true;
+        }
     }
 
+
+    public class Theme
+    {
+        public static readonly Color COLOR_RESULT_BACKGROUND_ERROR = System.Drawing.ColorTranslator.FromHtml("#EC2027");
+        public static readonly Color COLOR_RESULT_FOREGROUND_ERROR = System.Drawing.ColorTranslator.FromHtml("#FFFFFF");
+
+        public static readonly Color COLOR_RESULT_BACKGROUND_SUCCESS = System.Drawing.ColorTranslator.FromHtml("#6E9E5E");
+        public static readonly Color COLOR_RESULT_FOREGROUND_SUCCESS = System.Drawing.ColorTranslator.FromHtml("#FFFFFF");
+
+        public static readonly Color COLOR_RESULT_BACKGROUND_PENDING = System.Drawing.ColorTranslator.FromHtml("#E8E8E8");
+        public static readonly Color COLOR_RESULT_FOREGROUND_PENDING = System.Drawing.ColorTranslator.FromHtml("#808080");
+    }
 
 }
