@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DataMeshGroup.Fusion.Model;
-using DataMeshGroup.Fusion.Util;
 using ProfanityFilter;
 using QRCoder;
 
